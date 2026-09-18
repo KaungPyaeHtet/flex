@@ -75,6 +75,13 @@ Plan nightly track possessions for the North–South and East–West lines: deci
 Singapore commuter plan and adapt a journey around live disruptions, crowding
 and weather.
 
+> **Our submission: [`PS2/app/`](PS2/app/) — "Flex".** Built for Arjun (the
+> flexible-start, multi-modal commuter persona). Run it with
+> `cd PS2/app && npm install && npm run dev` — see
+> [`PS2/app/README.md`](PS2/app/README.md) for full setup and the first
+> journey to try, and [`WRITEUP.md`](WRITEUP.md) at the repository root for
+> the architecture, data sources, ranking assumptions and known limits.
+
 - **`PS2/PS2_README.md`** — the participant brief (1. Challenge Statement, 2. Challenge Details, 3. Expectations & Goals, 4. Deliverables)
 - **`PS2/data/`** — the provided datasets
 - **`PS2/references/Problem_Statement_2_Specification.docx`** / **`.pdf`** — the same brief as a formatted specification document

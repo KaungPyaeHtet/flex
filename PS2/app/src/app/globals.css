@@ -1,0 +1,71 @@
+@import "tailwindcss";
+
+:root {
+  --bg: #f7f8f6;
+  --surface: #ffffff;
+  --text: #161b19;
+  --text-muted: #52605c;
+  --border: #dbe2de;
+  --accent: #0f6e5b;
+  --accent-contrast: #ffffff;
+  --accent-soft: #e3f2ee;
+  --warn: #9a5b00;
+  --warn-soft: #fff2df;
+  --danger: #b3261e;
+  --danger-soft: #fdecea;
+  --crowd-low: #0f6e5b;
+  --crowd-moderate: #9a5b00;
+  --crowd-high: #b3261e;
+  --crowd-unknown: #5b6764;
+}
+
+@theme inline {
+  --color-bg: var(--bg);
+  --color-surface: var(--surface);
+  --color-text: var(--text);
+  --color-text-muted: var(--text-muted);
+  --color-border: var(--border);
+  --color-accent: var(--accent);
+  --color-accent-contrast: var(--accent-contrast);
+  --color-accent-soft: var(--accent-soft);
+  --color-warn: var(--warn);
+  --color-warn-soft: var(--warn-soft);
+  --color-danger: var(--danger);
+  --color-danger-soft: var(--danger-soft);
+}
+
+* {
+  -webkit-tap-highlight-color: transparent;
+}
+
+html,
+body {
+  background: var(--bg);
+  color: var(--text);
+}
+
+body {
+  font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+  overflow-x: hidden;
+}
+
+button,
+[role="button"] {
+  min-height: 44px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+.leaflet-container {
+  background: var(--bg);
+  font-family: inherit;
+}
