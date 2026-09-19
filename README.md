@@ -1,287 +1,107 @@
-# NebulaX 2026 Hackathon Repository
+# Flex — Smart Commuter Companion
 
- This repository contains curated datasets and resources for participants working on various problem statements related to Land Transport Authority (LTA) NebulaX 2026 hackathon
+**Find the best time and way to travel within your flexible arrival window.**
 
-## 📋 Table of Contents
+Built for **Arjun**, the flexible-start, multi-modal commuter (PS2 persona 2.2): Punggol → one-north, start time flexible by about an hour, optimises for comfort and predictability over raw speed, cares about crowding, cycling and whether he can bring his bike.
 
-- [Overview](#overview)
-- [Repository Structure](#repository-structure)
-- [Problem Statements](#problem-statements)
-  - [Problem Statement 1](#problem-statement-1-ps1)
-  - [Problem Statement 2](#problem-statement-2-ps2)
-  - [Problem Statement 3](#problem-statement-3-ps3)
-- [LTA DataMall API](#lta-datamall-api)
-- [Getting Started](#getting-started)
-- [Data Formats](#data-formats)
-- [Resources](#resources)
+The core decision Flex answers: **leave now, leave later, or take another route.**
 
 ---
 
-## 🎯 Overview
+## 1. Prerequisites
 
-This repository provides organized datasets for hackathon participants to build innovative solutions for Singapore's public transport challenges. Each problem statement folder contains relevant data sources to help you get started quickly.
+- Node.js **20+** (tested on Node 22)
+- npm (ships with Node)
+- Internet access at runtime — the app calls live public services directly (see §4); it does not need internet at *build* time beyond `npm install`
 
----?
+No database, no account system, no paid service is required to run or judge this app.
 
-## 📁 Repository Structure
+## 2. Install & run
 
-```
-Hackathon-Repo/
-├── PS1/                          # Problem Statement 1 — Railway Track Access Optimisation
-│   ├── PS1_README.md             # The participant brief (challenge, rules, scenarios, schema)
-│   ├── 01_data/                  # The demand-book CSVs (9 files) for this info pack
-│   ├── 02_references/            # Network diagrams
-│   └── 03_submission_sample/     # Reference submission — validates feasible, 0 violations
-│
-├── PS2/                          # Problem Statement 2 — Smart Commuter Companion
-│   ├── PS2_README.md             # The participant brief
-│   ├── data/                     # Provided datasets
-│   ├── references/               # Specification (.docx/.pdf) + full scoring rubric
-│   ├── submission/               # How to package and hand in a submission
-│   ├── generate_ps2_docx.py      # Regenerates the .docx (no dependencies)
-│   └── generate_ps2_pdf.py       # Regenerates the .pdf  (no dependencies)
-│
-├── PS3/                          # Problem Statement 3 — Train Condition Monitoring
-│   ├── 01_Problem_Statement_3_Specifications.md   # The participant brief
-│   ├── 02_Datasets/               # Train/test data per subsystem (Door, ACV, Rail_Corrugation, SHM)
-│   ├── 03_References/             # Per-subsystem Info Kits (background, acquisition, schema, labels)
-│   └── 04_Example_Submission/     # Sample prediction CSVs — required submission format
-│
-└── LTA_DataMall_API_User_Guide.pdf
+```bash
+cd PS2/app
+npm install
+cp .env.example .env.local   # optional — see §3
+npm run dev
 ```
 
----
+Open **http://localhost:3000** on a phone-width browser window (or an actual phone on the same network, via the "Network:" URL Next prints on start).
 
-## 🚀 Problem Statements
+Other commands:
 
-### Problem Statement 1 (PS1)
-
-**Focus Area:** Railway Track Access Optimisation
-
-Plan nightly track possessions for the North–South and East–West lines: decide which contracted activities get access on which weeks, pack compatible work into shared possessions, respect safety buffers and deadlines — and prove the schedule against the official validator.
-
-#### Start here:
-
-- **`PS1/PS1_README.md`** — the participant brief (challenge, domain model, rules, scenarios, output schema, tooling, traps)
-- **`PS1/01_data/`** — the demand-book CSVs (the instance) for this info pack
-- **`PS1/03_submission_sample/`** — a reference submission against that instance (feasible, 0 hard violations)
-- **`PS1/02_references/`** — network topology diagrams
-
----
-
-### Problem Statement 2 (PS2)
-
-**Focus Area:** Smart Commuter Companion — a mobile-first web app that helps a
-Singapore commuter plan and adapt a journey around live disruptions, crowding
-and weather.
-
-> **Our submission: [`PS2/app/`](PS2/app/) — "Flex".** Built for Arjun (the
-> flexible-start, multi-modal commuter persona). Run it with
-> `cd PS2/app && npm install && npm run dev` — see
-> [`PS2/app/README.md`](PS2/app/README.md) for full setup and the first
-> journey to try, and [`WRITEUP.md`](WRITEUP.md) at the repository root for
-> the architecture, data sources, ranking assumptions and known limits.
-
-- **`PS2/PS2_README.md`** — the participant brief (1. Challenge Statement, 2. Challenge Details, 3. Expectations & Goals, 4. Deliverables)
-- **`PS2/data/`** — the provided datasets
-- **`PS2/references/Problem_Statement_2_Specification.docx`** / **`.pdf`** — the same brief as a formatted specification document
-- **`PS2/references/PS2_scoring_rubric.md`** — the full rubric: every dimension broken into sub-axes with a description at each of the five levels, plus caps and judging protocol
-- **`PS2/submission/README.md`** — how to package and hand in a submission
-
-#### Available Datasets:
-
-- **Rail Infrastructure**
-
-  - `AmendmenttoMP2014RailStation.geojson` - GeoJSON data of rail stations with amendments to Master Plan 2014
-- **Weather Data**
-
-  - `24hourWeatherForecast.json` - Short-term weather predictions
-  - `4dayWeatherForecast.json` - Medium-term weather forecast
-- **Live Updates**
-
-  - `UsefulWebsites.txt` - Links to Telegram channels with real-time updates on:
-    - Train faults
-    - Service delays
-    - Operational disruptions
-    - Emergency notifications
-
-#### Telegram Data Source:
-
-- **SGMRT Telegram Channel**: [https://t.me/s/sgmrt](https://t.me/s/sgmrt?before=2527)
-  - Real-time updates on MRT/LRT service status
-  - Fault reports and delay notifications
-  - Historical data available through message archives
-
-#### Use Cases:
-
-- Door-to-door journey planning across rail, bus and walking
-- Rerouting around a live disruption, with the reason made clear
-- Accessibility-aware routing (step-free paths, lifts, sheltered walkways)
-- Crowding-aware and weather-aware recommendations
-- Knowing when *not* to interrupt the commuter
-
----
-
-### Problem Statement 3 (PS3)
-
-**Focus Area:** Train Condition Monitoring Detect faults and estimate degradation across four independent rail-vehicle subsystems — door motor cycles, ACV (aircon) refrigerant leaks, rail corrugation, and structural health monitoring — from raw sensor time series, then submit predictions the organisers can score against held-out ground truth.
-
-#### Start here:
-- PS3/01_Problem_Statement_3_Specifications.md — the participant brief (challenge, the four subsystems, repository structure, data conventions, deliverables, judging rubric)
-- PS3/02_Datasets/ — training and test data for each subsystem (Door, ACV, Rail_Corrugation, SHM)
-- PS3/03_References/ — each subsystem's Info Kit (business background, data acquisition method, file/column schema, reference labels)
-- PS3/04_Example_Submission/ — sample prediction CSVs, showing the required submission format
-
-#### Quick start: 
-Each subsystem is self-contained with its own task, dataset and Info Kit — teams can go deep on one or attempt several (the more attempted, the higher the score). The documents brief exactly what's scored, so teams validate their own outputs against the schema shown in 04_Example_Submission/ before packaging them into predictions.zip.
-
-#### Use Cases:
-- Temporal segment detection and binary classification — flag abnormal-resistance door-open/close cycles from door sensor data
-- Fault localisation — pinpoint which car has a refrigerant leak from cabin/ambient temperature and control-mode telemetry
-- Multi-class classification — distinguish Normal vs. Side I vs. Side II rail corrugation from multi-channel axle-box vibration and shock data
-- Regression — estimate cumulative fatigue damage from dynamic stress time series
-
----
-
-## 🔌 LTA DataMall API
-
-All participants have access to the **LTA DataMall API** for real-time transport data.
-
-### 📖 Documentation
-
-Refer to `LTA_DataMall_API_User_Guide.pdf` for comprehensive API documentation.
-
-### 🌐 API Base URL
-
-```
-https://datamall2.mytransport.sg/ltaodataservice/
+```bash
+npm run build      # production build
+npm run start       # run the production build
+npm run lint         # ESLint
+npm run typecheck   # tsc --noEmit
+npm test              # vitest — the ranking/constraint unit tests
 ```
 
-### 🔑 Getting Started with the API
+## 3. Configuration (all optional)
 
-1. **Register for API Access**
+Copy `.env.example` to `.env.local`. Every data source in this app runs on a clearly-labelled fixture when its key is absent — **nothing here is required to run or demo the app.**
 
-   - Visit [LTA DataMall](https://datamall.lta.gov.sg/content/datamall/en.html)
-   - Create an account and obtain your API key (AccountKey)
-2. **Available Endpoints** (Examples)
+| Variable | What it unlocks | Where to get it |
+|---|---|---|
+| `LTA_ACCOUNT_KEY` | Live `TrainServiceAlerts`, `PCDForecast` (station crowd) | Free registration at [datamall.lta.gov.sg](https://datamall.lta.gov.sg) |
+| `ONEMAP_TOKEN` | Not required for this corridor demo; wired for future extension beyond Punggol↔one-north | Free registration at [onemap.gov.sg/apidocs](https://www.onemap.gov.sg/apidocs/) |
+| `VAPID_PUBLIC_KEY` / `VAPID_PRIVATE_KEY` / `VAPID_SUBJECT` | The Web Push "bounded attempt" (closed-app test notification) | Generate your own: `npx web-push generate-vapid-keys` |
+| `NEXT_PUBLIC_VAPID_PUBLIC_KEY` | Same value as `VAPID_PUBLIC_KEY`, exposed client-side | — |
 
-   - **Bus Arrival**: `v3/BusArrival?BusStopCode={code}`
-   - **Bus Services**: `BusServices`
-   - **Bus Stops**: `BusStops`
-   - **Bus Routes**: `BusRoutes`
-   - **Taxi Availability**: `Taxi-Availability`
-   - **Traffic Incidents**: `TrafficIncidents`
-   - And many more...
-3. **Sample API Call**
+Weather (`data.gov.sg`) and the walking/cycling routing (OSM-based) run **live, with no key**, out of the box.
 
-   **Using cURL:**
+## 4. What's live, what's a labelled fixture
 
-   ```bash
-   curl -X GET "https://datamall2.mytransport.sg/ltaodataservice/v3/BusArrival?BusStopCode=83139" \
-     -H "AccountKey: YOUR_API_KEY_HERE"
-   ```
+| Source | Status without any key | Notes |
+|---|---|---|
+| Weather (data.gov.sg two-hr-forecast) | **Live** | Keyless public API |
+| Walking/cycling routes (OSRM over OSM data) | **Live** | Real routed geometry, not straight lines — see §6 |
+| Station geometry | **Live, static** | From the provided `PS2/data/AmendmenttoMP2014RailStation.geojson` |
+| TrainServiceAlerts | **Synthetic fixture** (labelled) | Add `LTA_ACCOUNT_KEY` for live |
+| PCDForecast (station crowd) | **Synthetic fixture** (labelled) | Add `LTA_ACCOUNT_KEY` for live |
 
-### 📊 Real-Time Data Available:
+The UI always shows which mode each figure is in — expand **"Why this recommendation, and where the data comes from"** under any result. Nothing is ever silently swapped from live to fixture without saying so.
 
-- Bus arrival times
-- Bus services and routes
-- Bus stop locations
-- Taxi availability
-- Carpark availability
-- Traffic incidents
-- Road works
-- Traffic speed bands
-- And more...
+## 5. The first journey to try
 
-## 📄 Data Formats
+The app opens pre-filled with Arjun's example trip — **no sign-up, no input required**:
 
-### JSON Files
+1. Load the app. It plans immediately: Punggol → one-north, leave between 07:15–09:00.
+2. Look at the **Demo controls** box (clearly separated, amber-dashed border — this is for judges/testers, not part of the commuter's own UI) and tap **"Unplanned disruption."**
+3. Watch the recommendation change: it now explains *why* — the HarbourFront route is down, so it routes you via Serangoon instead — and the map redraws to that route with the affected stations marked in red on the other option.
+4. Tap **"Another route"** in "Compare your options" to see the disrupted alternative side by side.
+5. Expand **"Why this recommendation…"** for full source attribution, freshness timestamps, and every disclosed modelling assumption.
 
-- Weather forecast data in standard JSON format
-- Structured with metadata and value arrays
-- Timestamps in ISO 8601 format
+Try the other three demo scenarios (**Normal day**, **Planned works**, **Irrelevant disruption**) — the last one exists specifically to prove the app does *not* reroute you for an incident on an unrelated line.
 
-### GeoJSON Files
+## 6. Bounded scope, stated honestly
 
-- Rail station data with geographic coordinates
-- Compatible with mapping libraries (Leaflet, Mapbox, Google Maps)
-- Contains feature properties and geometry
+This is a **bounded corridor demo**, not an island-wide router: only Punggol ↔ one-north via the North East Line and Circle Line is modelled (two real route options — via HarbourFront, via Serangoon), per PS2_README.md's own note that a bounded corridor is acceptable as long as the boundary is disclosed. Requesting a trip whose origin/destination sits far outside that corridor returns an explicit error rather than a fabricated route.
 
-### API Responses
+Within that corridor:
 
-- JSON format with OData metadata
-- Paginated results for large datasets
-- Real-time data with timestamps
+- **Walking/cycling legs are real, routed geometry** from OpenStreetMap data via a public OSRM instance (`routing.openstreetmap.de`) — not straight lines between station centres. (The other common public demo, `router.project-osrm.org`, was tried first and rejected: its `/foot` and `/bike` endpoints were found, by direct comparison, to silently return identical car-graph/car-speed results to `/driving` — see `src/lib/data/osrm.ts`.)
+- **Rail segments are schematic** — a polyline through real station coordinates in the correct sequence, not a live GPS trace. Disclosed in the source panel.
+- **Inter-station timing is a documented assumption** (~2.3 min/segment, typical scheduled run+dwell), always shown as a range.
+- Map tiles are OpenStreetMap's own tile server, with attribution, at ordinary single-session demo volume (not bulk/production traffic — see code comments in `src/components/RouteMapInner.tsx` for why CARTO's free tier was tried and rejected).
 
----
+## 7. Notifications & offline
 
-## 📚 Resources
+- **Foreground, always works:** save a trip and Flex re-checks conditions every ~2 minutes while the tab is open, flagging any change to your recommendation.
+- **Closed-app Web Push:** a bounded, real implementation (service worker + VAPID + a genuine push event) — trigger it from Demo Controls → "Send test push". It only ever fires from an explicit demo action and is labelled `[DEMO]` in the notification itself. iOS requires the app to be **Added to Home Screen** first (verified against current Apple/WebKit behaviour, September 2026); the app feature-detects this and explains the limitation rather than silently failing.
+- **Offline:** the last successfully computed journey is cached client-side with its own timestamp. Losing connectivity shows a visible "offline, last updated at…" banner — it never implies conditions were re-checked while offline.
 
-### Official Documentation
+## 8. Known limitations / not done
 
-- [LTA DataMall Portal](https://datamall.lta.gov.sg/content/datamall/en.html)
-- [LTA DataMall API User Guide](./LTA_DataMall_API_User_Guide.pdf)
-- [Data.gov.sg](https://data.gov.sg/) - Singapore's open data portal with additional transport, weather, and infrastructure datasets
+- LTA DataMall integration is code-complete but **untested against a live key** (none was available in this environment) — see §4.
+- Real-device testing (an actual phone, not devtools emulation) is **pending** — this was validated with the app's own responsive layout rules and a resized browser viewport, not a physical device.
+- OneMap routing/geocoding is wired but unused for this corridor (the provided station GeoJSON + OSM routing cover it); it's there for extending beyond Punggol↔one-north.
+- Push subscriptions are held in an in-memory server store (cleared on restart) — intentionally, to avoid standing up a database for a hackathon-scope demo. See `WRITEUP.md` for the privacy reasoning.
 
-### Live Data Sources
+## 9. Tests
 
-- [SGMRT Telegram Channel](https://t.me/s/sgmrt) - Real-time MRT/LRT updates
+```bash
+npm test
+```
 
-### Useful Tools
-
-- **JSON Viewers**: [jsonviewer.stack.hu](http://jsonviewer.stack.hu/)
-- **GeoJSON Viewers**: [geojson.io](http://geojson.io/)
-- **API Testing**: [Postman](https://www.postman.com/), [Insomnia](https://insomnia.rest/)
-- **
-
-### Weather Data Sources
-
-- Singapore Meteorological Service
-- NEA Weather API (if applicable)
-
----
-
-## 💡 Tips for Participants
-
-1. **Start with the API**: Familiarize yourself with the LTA DataMall API early
-2. **Understand the Data**: Spend time exploring the dataset structures
-3. **Think Real-time**: Consider how to integrate live data feeds
-4. **Weather Integration**: Many problems benefit from weather correlation
-5. **User-Centric**: Focus on solving real user pain points
-6. **Scalability**: Design solutions that can handle Singapore's transport scale
-7. **Scoring**: Read each of your PS specifications to understand what you would be scored on
-
----
-
-## 🤝 Support
-
-For questions about:
-
-- **Datasets**: Review the data files and API documentation
-- **API Access**: Visit [LTA DataMall Support](https://datamall.lta.gov.sg/content/datamall/en/contact-us.html)
-- **Problem Statements**: Consult with hackathon organizers
-
-!!! Mentors will be around on to help
-
-!!! Email LTA_XX_ title your queries with [PS#] Your Question
-
-Standard Template for PS folders:
-
-- PSX_README.md
-- data folder
-- reference folder (where you store things that are for their reference/reading)
-- submission folder (if needed)
-
----
-
-## 📝 License
-
-Please refer to LTA DataMall's terms of use for API data usage guidelines.
-
----
-
-## 🎉 Good Luck!
-
-We're excited to see what innovative solutions you'll build with these datasets. Happy hacking! 🚀
-
----
+17 unit tests cover the parts of the brief a demo click-through can't prove on its own: disruption relevance vs irrelevance, latest-arrival infeasibility, unknown-crowd handling, invalid (non-folding) bike carriage, no-feasible-route explanations, and departure-window changes in response to crowd forecasts and disruptions. See `tests/`.
